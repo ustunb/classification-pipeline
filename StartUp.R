@@ -31,6 +31,9 @@ get.directories = function(comp_name, show_directories = print_flag){
     if (comp_name == "berkmac") {
         fs$home_dir	= "/Users/berk/Desktop/Dropbox (MIT)/Research/ClassificationPipeline/"
         fs$lib_dir = NA;
+    } else if (comp_name =="ec2") {
+        fs$home_dir	= "/home/ubuntu/ClassificationPipeline/"
+        fs$lib_dir = paste0(fs$home_dir, "R/Packages/");
     } else if (comp_name =="svante") {
         fs$home_dir	= "/home/ustunb/SLIM/"
         fs$lib_dir = paste0(R_dir, "Packages/");

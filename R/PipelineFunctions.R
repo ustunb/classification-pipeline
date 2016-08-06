@@ -11,15 +11,11 @@
 #randomForest
 #Rpart
 
-#Libraries
-suppressPackageStartupMessages(library('methods', warn.conflicts = FALSE, quietly = TRUE, verbose = FALSE));
-suppressPackageStartupMessages(library('dplyr', warn.conflicts = FALSE, quietly = TRUE, verbose = FALSE));
-suppressPackageStartupMessages(library('glmnet',warn.conflicts = FALSE, quietly = TRUE, verbose = FALSE));
-suppressPackageStartupMessages(library('rpart', warn.conflicts = FALSE, quietly = TRUE, verbose = FALSE));
-suppressPackageStartupMessages(library('C50', warn.conflicts = FALSE, quietly = TRUE, verbose = FALSE));
-suppressPackageStartupMessages(library('gbm',  warn.conflicts = FALSE, quietly = TRUE, verbose = FALSE));
-suppressPackageStartupMessages(library('randomForest', warn.conflicts = FALSE, quietly = TRUE, verbose = FALSE));
-suppressPackageStartupMessages(library('e1071', warn.conflicts = FALSE, quietly = TRUE, verbose = FALSE));
+#Load Libraries
+required_packages = c('methods', 'dplyr', 'glmnet', 'rpart', 'C50', 'gbm', 'randomForest', 'e1071');
+for (pkg in required_packages){
+    suppressPackageStartupMessages(library(pkg, character.only = TRUE, warn.conflicts = FALSE, quietly = TRUE, verbose = FALSE));
+}
 
 #### logging #####
 print.to.console = function(print_string, flag=TRUE){
