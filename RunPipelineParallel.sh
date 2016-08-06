@@ -1,5 +1,4 @@
 #computer parameters
-comp_name="berkmac"
 data_name="breastcancer"
 fold_id="K05N01"
 hcon_id="U001"
@@ -83,28 +82,7 @@ R_sgb_save_debug_models="FALSE"
 
 ############################################################################
 #                      Setup directories and functions                   ############################################################################
-
-case ${comp_name} in
-    berkmac)
-        home_dir="/Users/berk/Desktop/Dropbox (MIT)/Research/ClassificationPipeline/"
-        n_cores=1
-    ;;
-    svante)        
-        home_dir="/home/ustunb/ClassificationPipeline/"
-    ;;
-    umisr)
-        home_dir="/home/ustunb/ClassificationPipeline/"
-    ;;
-    masha)
-        home_dir="/home/user/petukhova/Berk_method/"
-    ;;
-esac
-data_dir="${home_dir}Data/"
-R_dir="${home_dir}R/"
-log_dir="${home_dir}Logs/"
-base_run_dir="${home_dir}Run/"
-train_name="${data_name}_F_${fold_id}"
-
+source "LocalVariables.sh"
 varsToFiles() {  
 
   local outDir=$1 preName=$2 name fname rest isArray

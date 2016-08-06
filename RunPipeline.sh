@@ -105,13 +105,8 @@ varsToFiles() {
 
 }
 
-# sendRun(){
-# 
-# }
-
 ############################################################################
 #                      Run R for Each Positive Weight ############################################################################
-
 for w_pos in ${all_positive_weights[*]}; do
 
     weight_name=$(printf 'pos_%1.9f' ${w_pos})

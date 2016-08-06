@@ -3,27 +3,17 @@
 - /Data/                  processed RData files of datasets
 - /Data/Raw Data Files/   raw csv files of datasets
 - /Run/                   RData files containing run results
+- /Logs/                  Log files for pipeline runs
 - /R/                     R code + Rnw-files to create reports
-- /R/Library/             R package directory
+- /R/Packages/            R package directory (default)
 
 ## Pipeline Setup
 
-To setup pipeline on your machine, you need to add your computer name (`comp_name`), your home directory (`home_dir`), and the path to your R libraries to the `get.directories()` function in `StartUp.R`
+To setup the pipeline on your machine:
 
-```
-if (comp_name == "berkmac"){
-    home_dir = "/Users/berk/Desktop/Dropbox (MIT)/Research/ClassificationPipeline/"
-    lib_dir = NA;
-} else if (comp_name == "umisr"){
-    home_dir = "~/ClassificationPipeline/"
-    lib_dir = "~/ClassificationPipeline/R/Library/"
-    .libPaths(lib_dir)
-} else if (comp_name == "TODO"){
-    home_dir = "/" #TODO add home directory
-    lib_dir = "/" #TODO add library location or NA if using default
-}
-```
-Just hard code your `COMP_NAME` into #1, `HOME_DIR` into #2
+1. Add a unique computer name (`comp_name`) and the path to your home directory (`home_dir`) to the file `LocalVariables.sh`
+
+2. Run `SetupPipeline.sh` in Bash to install the required R packages (note that this requires that R is able to access the internet).
 
 ## Dataset Creation
 
@@ -61,7 +51,7 @@ Methods that are currently supported include:
 
 To run the pipeline:
 
-1. Edit `RunPipeline.sh` with the `data_name`, `comp_name`, `fold_id`, range of weights, methods and free parameters for each method.
+1. Edit `RunPipeline.sh` with the `data_name`, `fold_id`, range of weights, methods and free parameters for each method.
 
 2. Execute `RunPipeline.sh` in Bash
 
@@ -71,7 +61,6 @@ To run the pipeline:
 
 **To Do**
 
-- [x] Upload to GitHub
 - [ ] Report Creation Script
 - [ ] Fix ReadMe.txt with full instructions
 - [ ] Add Case Weight Support to DataFileTest
