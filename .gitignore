@@ -4,6 +4,7 @@
 # Pipeline Specific
 Run/
 Logs/
+LocalVariables.sh
 
 # Logs and Run-Based Variables
 .log
