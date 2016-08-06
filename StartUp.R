@@ -60,7 +60,7 @@ get.directories = function(comp_name, show_directories = print_flag){
     fs$raw_data_dir = paste0(fs$data_dir, "Raw Data Files/");
 
     if (show_directories){
-        print.to.console("current directories");
+        print.to.console("pipeline directories set as follows:");
         print.to.console(sprintf("comp_name: %s", comp_name));
         print.to.console(sprintf("home_dir: %s", fs$home_dir));
         print.to.console(sprintf("log_dir: %s", fs$log_dir));
@@ -85,12 +85,14 @@ set.library = function(lib_dir, show_flag = print_flag){
         .libPaths(lib_dir)
     }
     if (show_flag){
-        print.to.console(sprintf("lib_dir: %s", .libPaths()));
+        print.to.console("libPaths:");
+        print.to.console(sprintf("-%s\n", .libPaths()));
     }
 }
 
 set.log = function(log_dir, log_name, split_log = split_flag){
     if (!is.na(log_name)){
+        log_name = basename(log_name);
         correct_log_file_extension = (substr(log_name, nchar(log_name)-3, nchar(log_name)) == ".log")
         if (correct_log_file_extension){
             log_file = paste0(log_dir, log_name);

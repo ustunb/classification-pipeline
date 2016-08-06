@@ -2,17 +2,17 @@
 #Berk Ustun | ustunb@mit.edu | 2016
 
 ##### Setup Directories and Parse Command Line Arguments #####
-cat(sprintf("Opened Setup.R in directory: %s\n", getwd()))
+cat(sprintf("Opened SetupPipeline.R in directory: %s\n", getwd()))
 print_flag = TRUE;
 source("StartUp.R");
 args = commandArgs(TRUE);
 command_line_flag = (length(args) > 0)
 if (command_line_flag){
     comp_name = args[1];
-    log_name = ifelse(length(args) >= 1, args[1], NA);
+    log_name = ifelse(length(args) > 1, args[2], NA);
 } else {
     comp_name = "berkmac";
-    log_name = ifelse(length(args) >= 1, args[1], NA);
+    log_name = ifelse(length(args) > 1, args[2], NA);
 }
 
 #set directories
@@ -25,7 +25,12 @@ raw_data_dir = fs$raw_data_dir;
 log_dir = fs$log_dir;
 lib_dir = fs$lib_dir;
 rm(fs);
-set.library(lib_dir);
+
+#logging
+log_file = set.log(log_dir = log_dir, log_name = log_name);
+
+#libraries
+set.library(lib_dir, show_flag = print_flag);
 
 #install required packages for pipeline
 required_packages = c('dplyr',
@@ -72,6 +77,8 @@ while (!installed_all_packages){
     }
 }
 
-quit("no");
+cat(sprintf("Finished running SetupPipeline.R in directory: %s\n", getwd()));
+quit("no")
+
 
 
