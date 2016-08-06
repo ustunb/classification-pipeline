@@ -77,6 +77,11 @@ get.directories = function(comp_name, show_directories = print_flag){
 
 set.library = function(lib_dir, show_flag = print_flag){
     if (!is.na(lib_dir)){
+        if (!dir.exists(lib_dir)){
+            print.to.console(sprintf("library directory (lib_dir): %s does not exist", lib_dir));
+            print.to.console("will create the directory");
+            dir.create(path = lib_dir, showWarnings = FALSE, recursive)
+        }
         .libPaths(lib_dir)
     }
     if (show_flag){

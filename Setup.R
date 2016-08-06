@@ -58,7 +58,7 @@ max_attempts = 5;
 while (!installed_all_packages){
 
     #check if all packages have been installed properly
-    install.packages(pkgs = required_packages)
+    install.packages(pkgs = required_packages, lib = lib_dir);
     installed_packages = installed.packages()[,1]
     installed_idx = required_packages %in% installed_packages;
     installed_all_packages = all(installed_idx);
