@@ -14,6 +14,12 @@ case ${comp_name} in
     masha)
         home_dir="/home/user/petukhova/Berk_method/"
     ;;
+    ec2)
+        home_dir="/home/ubuntu/ClassificationPipeline/"
+    ;;
+    *)
+        home_dir=`pwd`'/'
+    ;;
 esac
 data_dir="${home_dir}Data/"
 R_dir="${home_dir}R/"
