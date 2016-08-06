@@ -1,0 +1,46 @@
+# Git Ignore File
+# This file tells git what kind of files to ignore in commits
+
+# Pipeline Specific
+Run/
+Logs/
+
+# Logs and Run-Based Variables
+.log
+.setting
+
+# R Stuff
+.Rhistory
+.Rapp.history
+.RData
+.Rproj.user/
+
+# OSX File Types
+.dropbox
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Icon
+
+# General Filetypes
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.tar.gz
+
+# Compiled Source
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so

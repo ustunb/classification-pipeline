@@ -1,0 +1,64 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                              Preamble                                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[letter]{article}
+
+%% Latex Formatting
+\addtolength{\oddsidemargin}{-.975in}
+\addtolength{\evensidemargin}{-.975in}
+\addtolength{\textwidth}{1.95in}
+\addtolength{\topmargin}{-1.00in}
+\addtolength{\textheight}{1.75in}
+
+%% Tex Packages
+\usepackage[british]{babel}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{comment}
+\usepackage{array}
+\usepackage{bigstrut}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{verbatim}
+\usepackage{fancyvrb}
+\usepackage{placeins}
+
+\newcommand{\cell}[2]{\begin{tabular}{#1}#2\end{tabular}}
+\newcommand{\bfcell}[2]{\setlength{\tabcolsep}{0pt}\textbf{\begin{tabular}{#1}#2\end{tabular}}}
+
+%% R Packages
+<<r_packages, results="hide",message=FALSE,echo=FALSE>>=
+require("knitr",warn.conflicts = FALSE, quietly = TRUE); 
+require("RColorBrewer",warn.conflicts = FALSE, quietly = TRUE); 
+require("ggplot2",warn.conflicts = FALSE, quietly = TRUE);
+require("scales",warn.conflicts = FALSE, quietly = TRUE);
+require("grid",warn.conflicts = FALSE, quietly = TRUE);
+require("lattice",warn.conflicts = FALSE, quietly = TRUE);
+require("formatR",warn.conflicts = FALSE, quietly = TRUE);
+require("Hmisc",warn.conflicts = FALSE, quietly = TRUE);
+require("xtable",warn.conflicts = FALSE, quietly = TRUE);
+require("rattle",warn.conflicts = FALSE, quietly = TRUE);
+require("gridExtra",warn.conflicts = FALSE, quietly = TRUE);
+require("C50",warn.conflicts = FALSE, quietly = TRUE);
+require("rpart.plot",warn.conflicts = FALSE, quietly = TRUE);
+@
+
+
+%% Knitr Options
+<<knitr_options,results="hide",message=FALSE,echo=FALSE>>=
+opts_chunk$set(comment=NA, 
+               fig.width=8, 
+               fig.height=8,
+               fig.path=paste0("figure/",report_data$filename,"_",sep=""), 
+               results='asis',
+               echo=FALSE,
+               message=FALSE,
+               dev="pdf")
+@
+
+\title{\Sexpr{report_data$title}}
+
+\begin{document}
+\maketitle
+\end{document}

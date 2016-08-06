@@ -1,0 +1,234 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                              Preamble                                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[letter]{article}
+
+%% Latex Formatting
+\addtolength{\oddsidemargin}{-.975in}
+\addtolength{\evensidemargin}{-.975in}
+\addtolength{\textwidth}{1.95in}
+\addtolength{\topmargin}{-1.00in}
+\addtolength{\textheight}{1.75in}
+
+%% Tex Packages
+\usepackage[british]{babel}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{comment}
+\usepackage{array}
+\usepackage{bigstrut}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{verbatim}
+\usepackage{fancyvrb}
+\usepackage{placeins}
+
+\newcommand{\predcell}[2]{\begin{tabular}{#1}\small{\textbf{#2}} \end{tabular}}
+\newcommand{\cell}[2]{\begin{tabular}{#1}#2\end{tabular}}
+\newcommand{\bfcell}[2]{\setlength{\tabcolsep}{0pt}\textbf{\begin{tabular}{#1}#2\end{tabular}}}
+\newcommand{\textds}[1]{\texttt{\footnotesize{#1}}}
+\newcommand{\textfn}[1]{#1}
+\newcommand{\wplus}{W^{+}} %\textnormal{\footnotesize \textsc{+}}}}
+\newcommand{\wminus}{W^{-}}%\textnormal{\footnotesize \textsc{--}}}}
+
+%% R Packages
+<<r_packages, results="hide",message=FALSE,echo=FALSE>>=
+require("knitr",warn.conflicts = FALSE, quietly = TRUE); 
+require("RColorBrewer",warn.conflicts = FALSE, quietly = TRUE); 
+require("ggplot2",warn.conflicts = FALSE, quietly = TRUE);
+require("scales",warn.conflicts = FALSE, quietly = TRUE);
+require("grid",warn.conflicts = FALSE, quietly = TRUE);
+require("lattice",warn.conflicts = FALSE, quietly = TRUE);
+require("formatR",warn.conflicts = FALSE, quietly = TRUE);
+require("Hmisc",warn.conflicts = FALSE, quietly = TRUE);
+require("xtable",warn.conflicts = FALSE, quietly = TRUE);
+require("rattle",warn.conflicts = FALSE, quietly = TRUE);
+require("gridExtra",warn.conflicts = FALSE, quietly = TRUE);
+require("C50",warn.conflicts = FALSE, quietly = TRUE);
+require("rpart.plot",warn.conflicts = FALSE, quietly = TRUE);
+@
+
+
+%% Knitr Options
+<<knitr_options,results="hide",message=FALSE,echo=FALSE>>=
+opts_chunk$set(comment=NA, 
+               fig.width=8, 
+               fig.height=8,
+               fig.path=paste0("figure/",report_data$filename,"_",sep=""), 
+               results='asis',
+               echo=FALSE,
+               message=FALSE,
+               warning=FALSE, 
+               dev="pdf")
+@
+
+\begin{document}
+\pagenumbering{gobble}
+%
+\section*{\Sexpr{report_data$title}}
+%
+\begin{table}[htbp]
+\flushleft
+\scriptsize
+%\renewcommand{\arraystretch}{1.2}
+<<settings_table>>=
+
+n_rows = nrow(report_data$settings_table)
+
+print.xtable(report_data$settings_table,
+      			 type = "latex",
+						 floating = FALSE,
+						 table.placement = "ht",
+						 sanitize.text.function = function(str) gsub("_","\\_",str,fixed=TRUE),
+						 sanitize.rownames.function = function(str) gsub("_","\\_",str,fixed=TRUE),
+						 sanitize.colnames.function = function(str) gsub("_","\\_",str,fixed=TRUE),
+						 include.rownames = TRUE,
+             include.colnames = FALSE,
+						 tabular.environment = "tabular",
+						 NA.string="-",
+						 comment=FALSE,
+						 timestamp=FALSE,
+						 hline.after=NULL,
+						 booktabs=TRUE,
+						 add.to.row=list(pos=as.list(-1:n_rows),
+						 								command=c('\\toprule ','',rep('\\midrule ',n_rows-1),'\\bottomrule\n')));	
+@
+\label{Table::SettingsTable}
+\end{table}
+%
+\begin{table}[htbp]
+\flushleft
+\scriptsize
+%\renewcommand{\arraystretch}{1.2}
+<<model_table>>=
+
+n_rows = nrow(report_data$model_table)
+
+print.xtable(report_data$model_table,
+      			 type = "latex",
+						 floating = FALSE,
+						 table.placement = "ht",
+						 sanitize.text.function = function(str) gsub("_","\\_",str,fixed=TRUE),
+						 sanitize.rownames.function = function(str) gsub("_","\\_",str,fixed=TRUE),
+						 sanitize.colnames.function = function(str) gsub("_","\\_",str,fixed=TRUE),
+						 include.rownames = FALSE,
+             include.colnames = TRUE,
+						 tabular.environment = "tabular",
+						 NA.string="-",
+						 comment=FALSE,
+						 timestamp=FALSE,
+						 hline.after=0,
+						 booktabs=TRUE,
+						 add.to.row=list(pos=as.list(-1:n_rows),
+						 								command=c('\\toprule ','',rep('\\midrule ',n_rows-1),'\\bottomrule ')));	
+@
+\label{Table::StatsTable}
+\end{table}
+%
+<<model>>=
+
+if (is.na(report_data$model)){
+
+  } else {
+  
+  if (report_data$method_name %in% c("C5.0_rule","C5.0_tree")) {
+    #Print Model Summary
+    cat("\n\\begin{verbatim}[htbp]")
+    cat(report_data$model)
+    cat("\n\\end{verbatim}")
+  }
+  
+  if (report_data$method_name %in% c("cart")) {
+    
+    cat("\n\\begin{figure}[htbp]\n")
+    cat("\\centering{\n")
+    prp(report_data$model
+        ,type=2
+        , extra=104
+        , nn=FALSE
+        , fallen.leaves=TRUE
+        , faclen=0
+        , varlen=0
+        , shadow.col="grey"
+        , branch.lty=3
+        , box.col=c("red", "green")[report_data$model$frame$yval]
+    )
+    cat("}\n\\end{figure}")
+  }
+  
+  if (report_data$method_name %in% c("mnrules")){
+    
+    #Print Model
+    cat("\n\\begin{table}[htbp]\n")
+    cat("\\centering{\n")
+    print.xtable(report_data$model,
+                 type = "latex",
+                 floating = FALSE,
+                 table.placement = "ht",
+                 tabular.environment = "tabularx",
+                 width = "\\textwidth",
+                 sanitize.text.function = function(str) gsub("_","\\_",str,fixed=TRUE),
+                 sanitize.rownames.function = function(str) gsub("_","\\_",str,fixed=TRUE),
+                 sanitize.colnames.function = function(str) gsub("_","\\_",str,fixed=TRUE),
+                 NA.string="",
+                 size="\\scriptsize",
+                 include.rownames = FALSE,
+                 include.colnames = FALSE,
+                 hline.after=1)
+    cat("\n}")
+    cat("\n\\end{table}")
+  }
+  
+  if (report_data$method_name %in% c("lars_lasso","lars_lasso_hc","lars_ridge","lars_elasticnet","logreg","svm_linear")){
+    
+    #Print Model
+    cat("\n\\begin{table}[htbp]\n")
+    cat("\\centering{\n")
+    print.xtable(report_data$model,
+                 type = "latex",
+                 floating = FALSE,
+                 table.placement = "ht",
+                 tabular.environment = "tabularx",
+                 width = "\\textwidth",
+                 sanitize.text.function = function(str) gsub("_","\\_",str,fixed=TRUE),
+                 sanitize.rownames.function = function(str) gsub("_","\\_",str,fixed=TRUE),
+                 sanitize.colnames.function = function(str) gsub("_","\\_",str,fixed=TRUE),
+                 NA.string="",
+                 size="\\scriptsize",
+                 comment=FALSE,
+                 timestamp=FALSE,
+                 include.rownames=FALSE,
+                 include.colnames=FALSE,
+                 hline.after=NULL)
+    cat("\n}")
+    cat("\n\\end{table}")
+  }
+  
+  if (report_data$method_name %in% c("slim")){
+    
+    cat("\n\\begin{figure}[htbp]\n")
+    cat("\\centering{\n")
+    print.xtable(report_data$scoring_system$xtable,
+                 type = "latex",
+                 floating = FALSE,
+                 table.placement = "htbp",
+                 tabular.environment = "tabular",
+                 sanitize.text.function = identity,
+                 sanitize.rownames.function = function(str) gsub("_","\\_",str,fixed=TRUE),
+                 sanitize.colnames.function = function(str) gsub("_","\\_",str,fixed=TRUE),
+                 include.rownames = FALSE,
+                 include.colnames = FALSE,
+                 NA.string="",
+                 hline.after=report_data$scoring_system$hline_guide,
+                 booktabs=FALSE,
+                 comment=FALSE,
+                 timestamp=FALSE,
+                 size=report_data$scoring_system$size_command)
+    cat("\n}")
+    cat("\n\\end{figure}")
+  }
+}
+@
+%
+\end{document}
