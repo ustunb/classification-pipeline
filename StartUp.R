@@ -80,7 +80,7 @@ set.library = function(lib_dir, show_flag = print_flag){
         if (!dir.exists(lib_dir)){
             print.to.console(sprintf("library directory (lib_dir): %s does not exist", lib_dir));
             print.to.console("will create the directory");
-            dir.create(path = lib_dir, showWarnings = FALSE, recursive)
+            dir.create(path = lib_dir, showWarnings = FALSE, recursive = TRUE);
         }
         .libPaths(lib_dir)
     }
