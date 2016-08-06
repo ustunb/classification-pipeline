@@ -80,8 +80,7 @@ set.library = function(lib_dir, show_flag = print_flag){
         .libPaths(lib_dir)
     }
     if (show_flag){
-        print.to.console(sprintf("lib_dir %s", .libPaths()));
-        print(installed.packages())
+        print.to.console(sprintf("lib_dir: %s", .libPaths()));
     }
 }
 
